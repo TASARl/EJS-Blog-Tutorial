@@ -13,13 +13,15 @@ const contactContent =
 
 const app = express();
 
-app.set("view engine", "ejs");
+app.set("view engine", "ejs"); //EJS kullanmak için npm ile yukledikten sonra bu satır gerekli
 
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static("public"));
+app.use(bodyParser.urlencoded({ extended: true })); // post ile gelen verileri req.body.veri şeklinde almak için gerekli
+app.use(express.static("public")); //statik dosyaalrı express ile yayınlama(bu klasor paylaşımda)
+
+const posts = [];
 
 app.get("/", (req, res) => {
-    res.render("home", { content: homeStartingContent });
+    res.render("home", { content: homeStartingContent, posts: posts });
 });
 
 app.get("/about", (req, res) => {
@@ -34,9 +36,13 @@ app.get("/compose", (req, res) => {
     res.render("compose");
 });
 
-app.post("/", (req, res) => {
-    console.log(req.body.inputTitle);
-    console.log(req.body.inputText);
+app.post("/compose", (req, res) => {
+    const post = {
+        title: req.body.postTitle,
+        content: req.body.postBody,
+    };
+    posts.push(post);
+    res.redirect("/");
 });
 
 app.listen(3000, function () {
