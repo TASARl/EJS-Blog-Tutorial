@@ -52,7 +52,7 @@ app.get("/posts/:postName", (req, res) => {
 
     posts.forEach((post) => {
         if (postTitleFromAddress === _.lowerCase(post.title)) {
-            console.log(" sayfa bulundu ");
+            res.render("post", { post: post });
         }
     });
 });
